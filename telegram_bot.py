@@ -52,13 +52,17 @@ async def chart_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """Handles the /chart command, generates, and sends the chart."""
     chat_id = update.effective_chat.id
     print(chat_id)
+    if (chat_id == '-1002353340797'):
+        coin_id = 'deli-fm'
+    else:
+        coin_id = 'degenerative-sitcom'
     # await context.bot.send_message(chat_id=chat_id, text="Generating chart... 📊")
 
     try:
         # 1. GET DATA (Using the imported mock data function)
-        original_data = get_ohlc(coin_id = 'degenerative-sitcom',cg_key=CG_KEY)
+        original_data = get_ohlc(coin_id,cg_key=CG_KEY)
 
-        volume_mcap_data = get_coin_data(coin_id = 'degenerative-sitcom',cg_key=CG_KEY)
+        volume_mcap_data = get_coin_data(coin_id,cg_key=CG_KEY)
 
         scale_factor = 1_000_000_000
         scaled_data = scale_ohlc_data(original_data, scale_factor)
