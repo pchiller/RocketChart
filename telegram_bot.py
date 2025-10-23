@@ -55,9 +55,9 @@ async def chart_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     try:
         # 1. GET DATA (Using the imported mock data function)
-        original_data = get_ohlc(coin_id = 'degenerative-sitcom',CG_KEY)
+        original_data = get_ohlc(coin_id = 'degenerative-sitcom',cg_key=CG_KEY)
 
-        volume_mcap_data = get_coin_data(coin_id = 'degenerative-sitcom',CG_KEY)
+        volume_mcap_data = get_coin_data(coin_id = 'degenerative-sitcom',cg_key=CG_KEY)
 
         scale_factor = 1_000_000_000
         scaled_data = scale_ohlc_data(original_data, scale_factor)
