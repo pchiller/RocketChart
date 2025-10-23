@@ -1,0 +1,44 @@
+name: Continuous Deployment to DigitalOcean
+
+# 1. Define when this workflow runs
+on:
+  push:
+    branches:
+      - main  # Change 'main' to your primary branch name
+
+# 2. Define the jobs (tasks) to be executed
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      # (Optional) Add steps here for building your application, 
+      # running tests, compiling assets, etc.
+
+      - name: Deploy via SSH
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          # Use the secrets we defined in GitHub Settings
+          host: ${{ secrets.DROPLET_IP }}
+          username: ${{ secrets.SSH_USERNAME }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: 22
+          
+          # 3. The Deployment Commands (Customize these!)
+          script: |
+            # Navigate to the project directory on your Droplet
+            cd /root/RocketChart
+
+            # Pull the latest changes from the origin (e.g., GitHub)
+            git pull origin main
+
+            # Example: Run build steps (e.g., for a Node.js app)
+            # npm install --production
+            # npm run build
+
+            # Example: Restart your application service (e.g., using systemd)
+            # sudo systemctl restart your_app_name.service
+            
+            echo "Deployment complete!"
