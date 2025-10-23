@@ -3,7 +3,7 @@ import requests
 from datetime import datetime
 import pandas as pd
 
-def get_ohlc(coin_id = 'degenerative-sitcom',cg_key):
+def get_ohlc(coin_id,cg_key):
     url = f'https://api.coingecko.com/api/v3/coins/{coin_id}/ohlc/'
     print(url)
     params = {
@@ -31,7 +31,7 @@ def convert_to_datetime_tuple(data):
     # Return a tuple: (datetime, open, high, low, close)
     return (date_obj,) + tuple(ohlc_values)
 
-def get_coin_data(coin_id = 'degenerative-sitcom',cg_key):
+def get_coin_data(coin_id,cg_key):
     url = f'https://api.coingecko.com/api/v3/simple/price/'
     print(url)
     params = {  
