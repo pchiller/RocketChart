@@ -27,18 +27,39 @@ jobs:
           port: 22
           
           # 3. The Deployment Commands (Customize these!)
-          script: |
-            # Navigate to the project directory on your Droplet
-            cd /root/RocketChart/
-
-            # Pull the latest changes from the origin (e.g., GitHub)
-            git pull origin main
-
-            # Example: Run build steps (e.g., for a Node.js app)
-            # npm install --production
-            # npm run build
-
-            # Example: Restart your application service (e.g., using systemd)
-            # sudo systemctl restart your_app_name.service
+script: |
+            # --- Configuration Variables (Edit These!) ---
+            DEPLOY_DIR="/var/www/your-project-folder"
+            APP_SCRIPT="telegram_bot.py" 
             
-            echo "Deployment complete!"
+            # --- 1. Pull Latest Code ---
+            echo "Navigating to $DEPLOY_DIR and pulling latest changes..."
+            cd $DEPLOY_DIR
+            git pull origin main
+            
+            # --- 2. Safely STOP the old process ---
+            # Search for the PID using the full command line
+            PID=$(pgrep -f "python.*$APP_SCRIPT")
+            
+            if [ -n "$PID" ]; then
+              echo "Stopping existing process with PID: $PID"
+              
+              # Attempt graceful shutdown (SIGTERM)
+              kill "$PID" 
+              sleep 5 
+              
+              # Check if process is still running; if so, force kill (SIGKILL)
+              if kill -0 "$PID" 2>/dev/null; then
+                  echo "Process did not stop gracefully. Forcing termination (kill -9)."
+                  kill -9 "$PID"
+              fi
+            else
+              echo "No existing process found to stop."
+            fi
+
+            # --- 3. Start the new process ---
+            echo "Starting new instance of $APP_SCRIPT..."
+            # Note: nohup and '&' are required to keep the process running after SSH disconnects
+            nohup /usr/bin/python3 "$APP_SCRIPT" > app.log 2>&1 & 
+
+            echo "Deployment and restart complete! Process running in background."
