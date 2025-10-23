@@ -32,12 +32,17 @@ jobs:
             DEPLOY_DIR="/root/RocketChart/"
             APP_SCRIPT="telegram_bot.py" 
             
-            # --- 1. Pull Latest Code ---
+            # --- 1. Load Environment Variables (NEW) ---
+            # Assuming your environment variables are in .profile
+            echo "Sourcing user profile..."
+            source ~/.profile
+
+            # --- 2. Pull Latest Code ---
             echo "Navigating to $DEPLOY_DIR and pulling latest changes..."
             cd $DEPLOY_DIR
             git pull origin main
             
-            # --- 2. Safely STOP the old process ---
+            # --- 3. Safely STOP the old process ---
             # Search for the PID using the full command line
             PID=$(pgrep -f "python.*$APP_SCRIPT")
             
@@ -57,7 +62,7 @@ jobs:
               echo "No existing process found to stop."
             fi
 
-            # --- 3. Start the new process ---
+            # --- 4. Start the new process ---
             echo "Starting new instance of $APP_SCRIPT..."
             # Note: nohup and '&' are required to keep the process running after SSH disconnects
             nohup /usr/bin/python3 "$APP_SCRIPT" > app.log 2>&1 & 
