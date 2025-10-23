@@ -51,6 +51,7 @@ async def start_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
 async def chart_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """Handles the /chart command, generates, and sends the chart."""
     chat_id = update.effective_chat.id
+    print(chat_id)
     # await context.bot.send_message(chat_id=chat_id, text="Generating chart... 📊")
 
     try:
