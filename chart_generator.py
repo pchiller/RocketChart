@@ -51,19 +51,15 @@ class CustomCandlestick:
              min_height = 0.005 * range_h_l
              if is_bullish: y_tip += min_height
              else: y_tip -= min_height
-
         rocket_width = self.width * 0.8
-        half_body_width = rocket_width / 2
-
+        half_body_width = round(rocket_width / 2,2)
         # Base Cap Configuration (Two Overlapping Circles)
         point_size = 500
         offset = half_body_width * 1.2
         x1 = x - offset
         x2 = x + offset
-
         # Top Cap Configuration (Single Large Circle)
-        top_cap_size = 150 # Adjusted size
-
+        top_cap_size = (half_body_width ** 2) * 10000*0.78
         if is_bullish:
             y_body_top = y_tip      # Close Price
             y_body_bottom = y_base  # Open Price
