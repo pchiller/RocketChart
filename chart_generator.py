@@ -59,7 +59,7 @@ class CustomCandlestick:
         x1 = x - offset
         x2 = x + offset
         # Top Cap Configuration (Single Large Circle)
-        top_cap_size = (half_body_width ** 2) * 10000*0.78
+        top_cap_size = (half_body_width ** 2) * 10000*0.8
         if is_bullish:
             y_body_top = y_tip      # Close Price
             y_body_bottom = y_base  # Open Price
